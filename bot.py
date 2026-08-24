@@ -3,6 +3,8 @@ from discord.ext import commands
 from discord.ui import Button, View
 from datetime import datetime
 import os
+from flask import Flask
+import threading
 
 # ========== โหลดค่าจาก Environment Variables ==========
 TOKEN = os.getenv("DISCORD_TOKEN")
@@ -218,5 +220,18 @@ async def send_rank_message(ctx):
     await ctx.send(embed=embed, view=view)
     await ctx.message.delete()
 
-# ========== รัน ==========
+# ========== Flask Keep-Alive (ให้ Render เห็นพอร์ต) ==========
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "บอท Discord ทำงานอยู่ ✅"
+
+def run_web():
+    app.run(host='0.0.0.0', port=8080)
+
+# เริ่ม Flask ใน background thread
+threading.Thread(target=run_web, daemon=True).start()
+
+# ========== รันบอท ==========
 bot.run(TOKEN)
