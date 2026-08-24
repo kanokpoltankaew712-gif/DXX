@@ -2,14 +2,19 @@ import discord
 from discord.ext import commands
 from discord.ui import Button, View
 from datetime import datetime
+import os
 
-# ========== ตั้งค่า ==========
-TOKEN = "MTUzNjc3NTQ2Njk0NDMwNzIzMA.Gqez67.CCAxYGydrHCvnPNMA5VXwNnxoz9q2qSLr-JUAc"
-ROLE_ID = 1518611666642669568
-TARGET_CHANNEL_ID = 1518592074386112512
-LOG_CHANNEL_ID = 1541283315527589928
-IMAGE_URL = "https://cdn.discordapp.com/attachments/1467885884354592840/1541542272632488086/92b59e77947f1cd1dcc4a35ada5890c8.png?ex=6a8df89e&is=6a8ca71e&hm=83aa3859bbda3d47de2259c3f3d423c06b26cd6e58da4c9b3fb79fdddfbfed04"
+# ========== โหลดค่าจาก Environment Variables ==========
+TOKEN = os.getenv("DISCORD_TOKEN")
+ROLE_ID = int(os.getenv("ROLE_ID", "1518611666642669568"))
+TARGET_CHANNEL_ID = int(os.getenv("TARGET_CHANNEL_ID", "1518592074386112512"))
+LOG_CHANNEL_ID = int(os.getenv("LOG_CHANNEL_ID", "1541283315527589928"))
+IMAGE_URL = os.getenv("IMAGE_URL", "https://cdn.discordapp.com/attachments/1467885884354592840/1541542272632488086/92b59e77947f1cd1dcc4a35ada5890c8.png?ex=6a8df89e&is=6a8ca71e&hm=83aa3859bbda3d47de2259c3f3d423c06b26cd6e58da4c9b3fb79fdddfbfed04")
 
+if TOKEN is None:
+    raise ValueError("❌ ไม่พบ DISCORD_TOKEN ใน Environment Variables")
+
+# ========== ตั้งค่า Intents ==========
 intents = discord.Intents.default()
 intents.message_content = True
 intents.guilds = True
@@ -28,7 +33,13 @@ async def send_log(guild, user, action, role_name):
     
     embed = discord.Embed(
         title="📋 บันทึกการกระทำ",
-        description=f"**ผู้ใช้:** {user.mention} ({user.name}#{user.discriminator})\n**ID:** `{user.id}`\n**การกระทำ:** {action}\n**ยศ:** {role_name}\n**เวลา:** {timestamp}",
+        description=(
+            f"**ผู้ใช้:** {user.mention} ({user.name}#{user.discriminator})\n"
+            f"**ID:** `{user.id}`\n"
+            f"**การกระทำ:** {action}\n"
+            f"**ยศ:** {role_name}\n"
+            f"**เวลา:** {timestamp}"
+        ),
         color=discord.Color.blue() if "รับ" in action else discord.Color.orange()
     )
     embed.set_thumbnail(url=user.display_avatar.url)
@@ -109,6 +120,7 @@ class RankView(View):
 @bot.event
 async def on_ready():
     print(f"✅ บอท {bot.user} พร้อมทำงานแล้ว!")
+    print(f"   เชื่อมต่อ {len(bot.guilds)} เซิร์ฟเวอร์")
 
     for guild in bot.guilds:
         bot_member = guild.me
