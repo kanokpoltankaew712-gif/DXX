@@ -4,7 +4,7 @@ from discord.ui import Button, View
 from datetime import datetime
 
 # ========== ตั้งค่า ==========
-TOKEN = "MTUzNjc3NTQ2Njk0NDMwNzIzMA.Ga7wo8.CtEDahOTem7a47Xk4cj4OXrqYE-I2yhhT9n7kE"
+TOKEN = "MTUzNjc3NTQ2Njk0NDMwNzIzMA.Gqez67.CCAxYGydrHCvnPNMA5VXwNnxoz9q2qSLr-JUAc"
 ROLE_ID = 1518611666642669568
 TARGET_CHANNEL_ID = 1518592074386112512
 LOG_CHANNEL_ID = 1541283315527589928
