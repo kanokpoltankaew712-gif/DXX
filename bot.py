@@ -12,7 +12,7 @@ LOG_CHANNEL_ID = int(os.getenv("LOG_CHANNEL_ID", "1541283315527589928"))
 IMAGE_URL = os.getenv("IMAGE_URL", "https://cdn.discordapp.com/attachments/1467885884354592840/1541542272632488086/92b59e77947f1cd1dcc4a35ada5890c8.png?ex=6a8df89e&is=6a8ca71e&hm=83aa3859bbda3d47de2259c3f3d423c06b26cd6e58da4c9b3fb79fdddfbfed04")
 
 if TOKEN is None:
-    raise ValueError("❌ ไม่พบ DISCORD_TOKEN ใน Environment Variables")
+    raise ValueError("❌ ไม่พบ DISCORD_TOKEN ใน Environment Variables กรุณาตั้งค่าใน Render")
 
 # ========== ตั้งค่า Intents ==========
 intents = discord.Intents.default()
